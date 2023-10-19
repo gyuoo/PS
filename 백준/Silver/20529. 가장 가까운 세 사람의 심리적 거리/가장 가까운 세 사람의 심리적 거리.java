@@ -11,29 +11,11 @@ public class Main {
 		int T = Integer.parseInt(br.readLine());
 		while (T-->0) {
 			N = Integer.parseInt(br.readLine());
-			HashMap<String, Integer> hm = new HashMap<>();
 			st = new StringTokenizer(br.readLine());
-			for (int i = 0; i < N; i++) {
-				String mbti = st.nextToken();
-				hm.put(mbti, hm.getOrDefault(mbti, 0)+1);
-			}
-			boolean flag = false;
-			for (int i : hm.values()) {
-				if (i >= 3) {
-					sb.append(0);
-					flag = true;
-					break;
-				}
-			}
-			if (!flag) {
+			if (N > 32) sb.append(0);
+			else {
 				arr = new String[N];
-				int idx = 0;
-				for (String s : hm.keySet()) {
-					while (hm.get(s) > 0) {
-						hm.put(s, hm.get(s)-1);
-						arr[idx++] = s;
-					}
-				}
+				for (int i = 0; i < N; i++) arr[i] = st.nextToken();
 				three = new String[3];
 				min = Integer.MAX_VALUE;
 				choice(0, 0);
