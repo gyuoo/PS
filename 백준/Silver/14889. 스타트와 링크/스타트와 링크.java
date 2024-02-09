@@ -3,42 +3,38 @@ import java.util.*;
 
 public class Main {
 	static int N, min;
-	static int[][] arr;
-	static boolean[] visited;
-	public static void main(String[] args) throws IOException{
+	static int[] sumR, sumC;
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		N = Integer.parseInt(br.readLine());
-		arr = new int[N][N];
+		sumR = new int[N];
+		sumC = new int[N];
+		int sum = 0;
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < N; j++) {
-				arr[i][j] = Integer.parseInt(st.nextToken());
+				int num = Integer.parseInt(st.nextToken());
+				sumR[i] += num;
+				sumC[j] += num;
+				sum += num;
 			}
 		}
-		min = 100;
-		visited = new boolean[N];
-		combi(0, 0);
-		System.out.println(min);
+		min = Integer.MAX_VALUE;
+		choice(0, 0, sum);	
+		System.out.print(min);
 	}
-	static void combi(int idx, int cnt) {
+	static void choice(int idx, int cnt, int sum) {
 		if (cnt == N/2) {
-			int sum1 = 0, sum2 = 0;
-			for (int i = 0; i < N-1; i++) {
-				for (int j = i+1; j < N; j++) {
-					if (visited[i] && visited[j]) sum1 += arr[i][j] + arr[j][i];
-					else if (!visited[i] && !visited[j]) sum2 += arr[i][j] + arr[j][i];
-				}
+			min = Math.min(min, Math.abs(sum));
+			if (sum == 0) {
+				System.out.print(0);
+				System.exit(0);
 			}
-			min = Math.min(min, Math.abs(sum1-sum2));
 			return;
 		}
-		for (int i = idx; i < N; i++) {
-			if (!visited[i]) {
-				visited[i] = true;
-				combi(i+1, cnt+1);
-				visited[i] = false;
-			}
-		}
+		if (idx == N) return;
+		choice(idx+1, cnt+1, sum-sumR[idx]-sumC[idx]);
+		choice(idx+1, cnt, sum);
 	}
 }
