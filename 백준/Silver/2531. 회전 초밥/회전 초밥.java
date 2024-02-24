@@ -1,30 +1,23 @@
 import java.io.*;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static int[] cnt;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken()), d = Integer.parseInt(st.nextToken()), k = Integer.parseInt(st.nextToken()), c = Integer.parseInt(st.nextToken());
-        int[] arr = new int[N];
-        for (int i = 0; i < N; i++) arr[i] = Integer.parseInt(br.readLine());
-        cnt = new int[d+1];
-        cnt[c]++;
-        for (int i = 0; i < k; i++) cnt[arr[i]]++;
-        int ans = count();
-        for (int i = k; i < N+k; i++) {
-            cnt[arr[i-k]]--;
-            cnt[arr[i%N]]++;
-            ans = Math.max(ans, count());
-        }
-        System.out.println(ans);
-    }
-    static int count() {
-        int num = 0;
-        for (int i : cnt) {
-            if (i > 0) num++;
-        }
-        return num;
-    }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken()), d = Integer.parseInt(st.nextToken()), k = Integer.parseInt(st.nextToken()), c = Integer.parseInt(st.nextToken()), cnt = 1;
+		int[] count = new int[d+1], dish = new int[N];
+		count[c]++;
+		for (int i = 0; i < N; i++) dish[i] = Integer.parseInt(br.readLine());
+		for (int i = 0; i < k; i++) {
+			if (count[dish[i]]++ == 0) cnt++;
+		}
+		int ans = cnt;
+		for (int i = k; i < N+k; i++) {
+			if (count[dish[(i-k)%N]]-- == 1) cnt--;
+			if (count[dish[i%N]]++ == 0) cnt++;
+			ans = Math.max(ans, cnt);
+		}
+		System.out.println(ans);
+	}
 }
