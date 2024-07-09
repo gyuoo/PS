@@ -12,8 +12,8 @@ public class Main {
             for (int j = i+1; j < N; j++) {
                 String next = arr[j];
                 if (next.length() <= max) continue;
-                int cnt = 0, len = Math.min(now.length(), next.length());
-                for (int k = 0; k < len; k++) {
+                int cnt = 0;
+                for (int k = 0; k < Math.min(now.length(), next.length()); k++) {
                     if (now.charAt(k) != next.charAt(k)) break;
                     cnt++;
                 }
