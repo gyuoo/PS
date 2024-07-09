@@ -8,8 +8,10 @@ public class Main {
         for (int i = 0; i < N; i++) arr[i] = br.readLine();
         for (int i = 0; i < N-1; i++) {
             String now = arr[i];
+            if (now.length() <= max) continue;
             for (int j = i+1; j < N; j++) {
                 String next = arr[j];
+                if (next.length() <= max) continue;
                 int cnt = 0, len = Math.min(now.length(), next.length());
                 for (int k = 0; k < len; k++) {
                     if (now.charAt(k) != next.charAt(k)) break;
