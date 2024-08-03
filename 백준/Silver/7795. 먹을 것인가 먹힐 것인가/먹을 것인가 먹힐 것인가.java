@@ -17,15 +17,12 @@ public class Main {
             for (int i = 0; i < M; i++) B[i] = Integer.parseInt(st.nextToken());
             Arrays.sort(A);
             Arrays.sort(B);
-            int ans = 0;
-            for (int i = 0; i < N; i++) {
-                int start = 0, end = M-1;
-                while (start <= end) {
-                    int mid = (start+end)/2;
-                    if (B[mid] < A[i]) start = mid+1;
-                    else end = mid-1;
-                }
-                ans += start;
+            int ans = 0, a = 0, b = 0;
+            while (a < N && b < M) {
+                if (B[b] < A[a]) {
+                    ans += N-a;
+                    b++;
+                } else a++;
             }
             sb.append(ans).append('\n');
         }
