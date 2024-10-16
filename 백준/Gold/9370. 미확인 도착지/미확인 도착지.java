@@ -60,6 +60,7 @@ public class Main {
 			int next = now.end;
 			if (visited[next]) continue;
 			visited[next] = true;
+			if (now.value > values[next]) continue;
 			for (Node n : info[next]) {
 				if (values[n.end] > values[next]+n.value) {
 					values[n.end] = values[next]+n.value;
