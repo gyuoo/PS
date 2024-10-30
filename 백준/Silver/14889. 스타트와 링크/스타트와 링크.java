@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
 	static int N, min;
 	static int[] sumR, sumC;
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		N = Integer.parseInt(br.readLine());
@@ -21,16 +21,17 @@ public class Main {
 			}
 		}
 		min = Integer.MAX_VALUE;
-		choice(0, 0, sum);	
+		choice(0, 0, sum);
 		System.out.print(min);
 	}
 	static void choice(int idx, int cnt, int sum) {
 		if (cnt == N/2) {
-			min = Math.min(min, Math.abs(sum));
 			if (sum == 0) {
-				System.out.print(0);
-				System.exit(0);
+				min = 0;
+				return;
 			}
+			int absSum  = Math.abs(sum);
+			if (absSum < min) min = absSum;
 			return;
 		}
 		if (idx == N) return;
