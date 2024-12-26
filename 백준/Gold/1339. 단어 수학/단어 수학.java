@@ -15,9 +15,7 @@ public class Main {
         }
         Arrays.sort(cnt);
         int ans = 0;
-        for (int i = 25; 17 <= i; i--) {
-            ans += (i-16) * cnt[i];
-        }
+        for (int i = 9; 0 < i; i--) ans += i * cnt[16+i];
         System.out.println(ans);
     }
 }
