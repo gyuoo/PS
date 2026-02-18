@@ -16,26 +16,10 @@ public class Main {
             for (int i = 0; i < N; i++) {
                 arr[i] = Integer.parseInt(st.nextToken());
             }
-            boolean isAsc = true, isDesc = true;
-            for (int i = 1; i < N; i++) {
-                if (arr[i-1] < arr[i]) isDesc = false;
-                else if (arr[i] < arr[i-1]) isAsc = false;
-                if (!isDesc && !isAsc) break;
-            }
-            long ans = 0;
-            if (isAsc) {
-                for (int i = 0; i < N-1; i++) {
-                    ans += arr[N-1]-arr[i];
-                }
-            } else if (!isDesc && !isAsc) {
-                int max = 0;
-                for (int i = N-1; 0 <= i; i--) {
-                    if (max < arr[i]) {
-                        max = arr[i];
-                    } else {
-                        ans += max-arr[i];
-                    }
-                }
+            long ans = 0, max = 0;
+            for (int i = N-1; 0 <= i; i--) {
+                if (max < arr[i]) max = arr[i];
+                else ans += max-arr[i];
             }
             sb.append(ans).append('\n');
         }
