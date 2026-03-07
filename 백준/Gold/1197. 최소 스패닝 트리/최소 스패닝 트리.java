@@ -1,17 +1,20 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
-    static class Edge implements Comparable<Edge>{
-        int u, v, w;
-        Edge(int u, int v, int w) {
-            this.u = u;
-            this.v = v;
-            this.w = w;
+
+    static class Edge implements Comparable<Edge> {
+        int from, to, weight;
+        Edge(int from, int to, int weight) {
+            this.from = from;
+            this.to = to;
+            this.weight = weight;
         }
         @Override
         public int compareTo(Edge o) {
-            return Integer.compare(this.w, o.w);
+            return Integer.compare(this.weight, o.weight);
         }
     }
     static int[] parent;
@@ -22,30 +25,36 @@ public class Main {
         Edge[] edges = new Edge[E];
         for (int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken()), v = Integer.parseInt(st.nextToken()), w = Integer.parseInt(st.nextToken());
-            edges[i] = new Edge(u, v, w);
+            int A = Integer.parseInt(st.nextToken()), B = Integer.parseInt(st.nextToken()), C = Integer.parseInt(st.nextToken());
+            edges[i] = new Edge(A, B, C);
         }
         Arrays.sort(edges);
-        parent = new int[V+1];
-        for (int i = 0; i <= V; i++) parent[i] = i;
-        int mstCost = 0, usedEdges = 0;
-        for (Edge e : edges) {
-            if (union(e.u, e.v)) {
-                mstCost += e.w;
-                if (++usedEdges == V-1) break;
+        parent = new int[V + 1];
+        for (int i = 1; i <= V; i++) {
+            parent[i] = i;
+        }
+        int cnt = 0, ans = 0;
+        for (Edge edge : edges) {
+            if (find(edge.from) != find(edge.to)) {
+                union(edge.from, edge.to);
+                ans += edge.weight;
+                if (++cnt == V-1) {
+                    break;
+                }
             }
         }
-        System.out.print(mstCost);
+        System.out.print(ans);
     }
-    static int find(int n) {
-        if (parent[n] == n) return n;
-        return parent[n] = find(parent[n]);
+
+    static int find(int x) {
+        if (parent[x] == x) return x;
+        return parent[x] = find(parent[x]);
     }
-    static boolean union(int a, int b) {
-        a = find(a);
-        b = find(b);
-        if (a == b) return false;
-        parent[b] = a;
-        return true;
+
+    static void union(int a, int b) {
+        int pa = find(a), pb = find(b);
+        if (pa != pb) {
+            parent[pb] = pa;
+        }
     }
 }
