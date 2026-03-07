@@ -1,50 +1,66 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static ArrayList<Integer>[] relations;
-    static int[] cntArr, visited;
-    static int N, visitStamp;
+
+    static int N, mark;
+    static List<Integer>[] map;
+    static int[] cnts, visited;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
         N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        relations = new ArrayList[N+1];
-        for (int i = 1; i <= N; i++) relations[i] = new ArrayList<>();
+        map = new List[N+1];
+        cnts = new int[N+1];
+        for (int i = 0; i <= N; i++) {
+            map[i] = new ArrayList<>();
+        }
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             int A = Integer.parseInt(st.nextToken()), B = Integer.parseInt(st.nextToken());
-            relations[B].add(A);
+            map[B].add(A);
         }
-        visitStamp = 1;
         visited = new int[N+1];
-        cntArr = new int[N+1];
-        int max = 0;
+        mark = 0;
         for (int i = 1; i <= N; i++) {
-            bfs(i);
-            if (cntArr[i] > max) max = cntArr[i];
+            cnts[i] = bfs(i);
         }
+        int max = 0;
+        for (int i : cnts) {
+            max = Math.max(max, i);
+        }
+        List<Integer> answers = new ArrayList<>();
         for (int i = 1; i <= N; i++) {
-            if (cntArr[i] == max) sb.append(i).append(' ');
+            if (cnts[i] == max) answers.add(i);
+        }
+        for (int i : answers) {
+            sb.append(i).append(' ');
         }
         System.out.print(sb);
     }
-    static void bfs(int n) {
-        visited[n] = visitStamp;
+    static int bfs(int start) {
         Queue<Integer> q = new ArrayDeque<>();
-        q.offer(n);
+        q.offer(start);
+        mark++;
+        visited[start] = mark;
+        int cnt = 1;
         while (!q.isEmpty()) {
             int now = q.poll();
-            for (int next : relations[now]) {
-                if (visited[next] != visitStamp) {
-                    visited[next] = visitStamp;
-                    cntArr[n]++;
-                    q.offer(next);
-                }
+            for (int i : map[now]) {
+                if (visited[i] == mark) continue;
+                visited[i] = mark;
+                q.offer(i);
+                cnt++;
             }
         }
-        visitStamp++;
+        return cnt;
     }
+
 }
